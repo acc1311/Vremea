@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meteo ANM</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #0b1e2d;
+    color: white;
+}
+.widget {
+    padding: 10px;
+}
+.temp {
+    font-size: 28px;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="widget">
+    <div id="locatie">Se încarcă...</div>
+    <div class="temp" id="temp"></div>
+    <div id="detalii"></div>
+</div>
+
+<script>
+const URL = "https://script.google.com/macros/s/AKfycbzFP4O7Q9Cg7bPJqvjJoe2FsbDof-rReFO7DvI-LYhFgJWqZ4SEpvG1XwcT10lh9U7y/exec";
+
+async function loadWeather() {
+    try {
+        const res = await fetch(URL);
+        const data = await res.json();
+
+        // adaptează după structura ta
+        document.getElementById("locatie").innerText = data.locatie || "România";
+        document.getElementById("temp").innerText = data.temp + "°C";
+        document.getElementById("detalii").innerText = data.descriere;
+
+    } catch (e) {
+        document.getElementById("locatie").innerText = "Eroare conexiune";
+    }
+}
+
+loadWeather();
+
+// refresh automat la 10 min
+setInterval(loadWeather, 600000);
+</script>
+
+</body>
+</html>
